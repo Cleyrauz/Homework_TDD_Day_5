@@ -90,13 +90,28 @@ def customer_pet_count(customers)
 end
 
 #Add pet to customer
-def add_pet_to_customer(customer, new_pet)
+def add_pet_to_customer(customers, new_pet)
 add_pet_to_customer = customers[:pets].push(new_pet)
 customer_pet_count = customers[:pets].size
 return customer_pet_count
 end
 
-# add_pet_to_stock = pet_shop[:pets].push(new_pet)
-# count = pet_shop[:pets].size
-# return count
-# end
+# Check for founds of customers to buy a pet
+def customer_can_afford_pet(customer, pet)
+    if customer[:cash] > pet[:price]
+      return true
+    else
+      return false
+    end
+  end
+
+#Integration test 
+def sell_pet_to_customer(shop, pet, customer)
+  return if (pet == nil)
+  if customer_can_afford_pet(customer, pet) == true
+    add_pet_to_customer(customer, pet)
+    increase_pets_sold(shop, 1)
+    remove_customer_cash(customer, pet[:price])
+    add_or_remove_cash(shop, pet[:price])
+  end
+end
